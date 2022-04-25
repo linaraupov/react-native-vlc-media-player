@@ -5,6 +5,8 @@
 #import "React/UIView+React.h"
 #import <MobileVLCKit/MobileVLCKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import <React/RCTLog.h>
+
 static NSString *const statusKeyPath = @"status";
 static NSString *const playbackLikelyToKeepUpKeyPath = @"playbackLikelyToKeepUp";
 static NSString *const playbackBufferEmptyKeyPath = @"playbackBufferEmpty";
@@ -38,6 +40,7 @@ static NSString *const playbackRate = @"rate";
                                                  selector:@selector(applicationWillEnterForeground:)
                                                      name:UIApplicationWillEnterForegroundNotification
                                                    object:nil];
+        
 
     }
 
@@ -46,6 +49,7 @@ static NSString *const playbackRate = @"rate";
 
 - (void)applicationWillResignActive:(NSNotification *)notification
 {
+  
     if (!_paused) {
         [self setPaused:_paused];
     }
@@ -154,6 +158,22 @@ static NSString *const playbackRate = @"rate";
     [self updateVideoProgress];
 }
 
+- (void)onVideoTracks {
+    if(_player){
+        NSArray *tracksNames = [_player videoTrackNames];
+        NSArray *tracksIndexes = [_player videoTrackIndexes];
+        int currentTrackIndex = [_player currentVideoTrackIndex];
+        
+        NSLog(@"tracksNames %@", tracksNames);
+        self.onVideoAudioTracks(@{
+            @"target": self.reactTag,
+            @"trackNames": tracksNames,
+            @"trackIndexes": tracksIndexes,
+            @"currentTrackIndex":[NSNumber numberWithInt:currentTrackIndex]
+                                });
+    }
+}
+
 - (void)mediaPlayerStateChanged:(NSNotification *)aNotification
 {
 
@@ -164,14 +184,14 @@ static NSString *const playbackRate = @"rate";
         VLCMediaPlayerState state = _player.state;
         switch (state) {
             case VLCMediaPlayerStateOpening:
-                 NSLog(@"VLCMediaPlayerStateOpening %i",1);
+                 NSLog(@"VLCMediaPlayerStateOpening %i",1111);
                 self.onVideoOpen(@{
                                      @"target": self.reactTag
                                      });
                 break;
             case VLCMediaPlayerStatePaused:
                 _paused = YES;
-                NSLog(@"VLCMediaPlayerStatePaused %i",1);
+                NSLog(@"VLCMediaPlayerStatePaused %i",2);
                 self.onVideoPaused(@{
                                      @"target": self.reactTag
                                      });
@@ -196,6 +216,8 @@ static NSString *const playbackRate = @"rate";
                                       @"seekable": [NSNumber numberWithBool:[_player isSeekable]],
                                       @"duration":[NSNumber numberWithInt:[_player.media.length intValue]]
                                       });
+                [self onVideoTracks];
+
                 break;
             case VLCMediaPlayerStateEnded:
                 NSLog(@"VLCMediaPlayerStateEnded %i",1);
@@ -297,7 +319,6 @@ static NSString *const playbackRate = @"rate";
         [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
 }
-
 
 #pragma mark - Lifecycle
 - (void)removeFromSuperview

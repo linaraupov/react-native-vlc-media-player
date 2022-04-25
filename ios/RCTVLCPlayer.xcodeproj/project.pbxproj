@@ -10,6 +10,7 @@
 		0C1A0ECA1D07E18700441684 /* RCTVLCPlayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C1A0EC81D07E18700441684 /* RCTVLCPlayerManager.m */; };
 		0CA30C481D07E0DB003B09F9 /* RCTVLCPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0CA30C471D07E0DB003B09F9 /* RCTVLCPlayer.h */; };
 		0CA30C4A1D07E0DB003B09F9 /* RCTVLCPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA30C491D07E0DB003B09F9 /* RCTVLCPlayer.m */; };
+		2FC52B7C2810269B00ACC816 /* libRCTVLCPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CA30C441D07E0DB003B09F9 /* libRCTVLCPlayer.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,6 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FC52B7C2810269B00ACC816 /* libRCTVLCPlayer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

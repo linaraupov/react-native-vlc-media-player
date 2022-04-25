@@ -25,7 +25,8 @@ export default class VLCPlayer extends Component {
     this._onOpen = this._onOpen.bind(this);
     this._onLoadStart = this._onLoadStart.bind(this);
     this.changeVideoAspectRatio = this.changeVideoAspectRatio.bind(this);
-  }
+    this._onAudioTracks = this._onAudioTracks.bind(this)
+;  }
   static defaultProps = {
     autoplay: true,
   };
@@ -113,6 +114,14 @@ export default class VLCPlayer extends Component {
     }
   }
 
+  _onAudioTracks(event) {
+    console.log("event", event)
+    if (this.props.onAudioTracks) {
+      console.log("event.nativeEvent", event.nativeEvent)
+      this.props.onAudioTracks(event.nativeEvent);
+    }
+  }
+
   render() {
     /* const {
      source
@@ -161,6 +170,7 @@ export default class VLCPlayer extends Component {
       onVideoPaused: this._onPaused,
       onVideoStopped: this._onStopped,
       onVideoBuffering: this._onBuffering,
+      onVideoAudioTracks: this._onAudioTracks,
       progressUpdateInterval: 250,
     });
 
@@ -197,16 +207,18 @@ VLCPlayer.propTypes = {
   onVideoStopped: PropTypes.func,
   onVideoBuffering: PropTypes.func,
   onVideoOpen: PropTypes.func,
-
+  onVideoAudioTracks: PropTypes.func,
+  
   /* Wrapper component */
   source: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
-
+  
   onError: PropTypes.func,
   onProgress: PropTypes.func,
   onEnded: PropTypes.func,
   onStopped: PropTypes.func,
   onPlaying: PropTypes.func,
   onPaused: PropTypes.func,
+  onAudioTracks: PropTypes.func,
 
   /* Required by react-native */
   scaleX: PropTypes.number,

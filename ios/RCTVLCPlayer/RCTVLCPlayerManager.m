@@ -23,6 +23,7 @@ RCT_EXPORT_VIEW_PROPERTY(onVideoEnded, RCTDirectEventBlock);
 RCT_EXPORT_VIEW_PROPERTY(onVideoError, RCTDirectEventBlock);
 RCT_EXPORT_VIEW_PROPERTY(onVideoOpen, RCTDirectEventBlock);
 RCT_EXPORT_VIEW_PROPERTY(onVideoLoadStart, RCTDirectEventBlock);
+RCT_EXPORT_VIEW_PROPERTY(onVideoAudioTracks, RCTDirectEventBlock);
 
 - (dispatch_queue_t)methodQueue
 {
