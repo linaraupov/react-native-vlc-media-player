@@ -104,6 +104,7 @@ static NSString *const playbackRate = @"rate";
     [_player setDrawable:self];
     _player.delegate = self;
     _player.scaleFactor = 0;
+
     VLCMedia *media = [VLCMedia mediaWithURL:_uri];
 
     for (NSString* option in initOptions) {
@@ -137,6 +138,7 @@ static NSString *const playbackRate = @"rate";
     _player.delegate = self;
     _player.scaleFactor = 0;
 
+
     VLCMedia *media = [VLCMedia mediaWithURL:_uri];
 
     for (NSString* option in initOptions) {
@@ -160,11 +162,10 @@ static NSString *const playbackRate = @"rate";
 
 - (void)onVideoTracks {
     if(_player){
-        NSArray *tracksNames = [_player videoTrackNames];
-        NSArray *tracksIndexes = [_player videoTrackIndexes];
-        int currentTrackIndex = [_player currentVideoTrackIndex];
+        NSArray *tracksNames = [_player audioTrackNames];
+        NSArray *tracksIndexes = [_player audioTrackIndexes];
+        int currentTrackIndex = [_player currentAudioTrackIndex];
         
-        NSLog(@"tracksNames %@", tracksNames);
         self.onVideoAudioTracks(@{
             @"target": self.reactTag,
             @"trackNames": tracksNames,
@@ -306,6 +307,13 @@ static NSString *const playbackRate = @"rate";
 {
     if (_player) {
         [[_player audio] setMuted:value];
+    }
+}
+
+- (void)setCurrentAudioTrackIndex:(NSInteger*)index
+{
+    if(_player){
+        [_player setCurrentAudioTrackIndex:index];
     }
 }
 

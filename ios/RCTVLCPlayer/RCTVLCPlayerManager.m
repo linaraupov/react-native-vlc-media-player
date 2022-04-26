@@ -37,10 +37,12 @@ RCT_EXPORT_VIEW_PROPERTY(rate, float);
 RCT_EXPORT_VIEW_PROPERTY(resume, BOOL);
 RCT_EXPORT_VIEW_PROPERTY(videoAspectRatio, NSString);
 RCT_EXPORT_VIEW_PROPERTY(snapshotPath, NSString);
+RCT_EXPORT_VIEW_PROPERTY(currentAudioTrackIndex, NSInteger);
 RCT_CUSTOM_VIEW_PROPERTY(muted, BOOL, RCTVLCPlayer)
 {
     BOOL isMuted = [RCTConvert BOOL:json];
     [view setMuted:isMuted];
 };
+
 
 @end

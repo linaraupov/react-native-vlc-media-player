@@ -14,6 +14,7 @@ export default class VLCPlayer extends Component {
     this.seek = this.seek.bind(this);
     this.resume = this.resume.bind(this);
     this.snapshot = this.snapshot.bind(this);
+    this.currentAudioTrackIndex = this.currentAudioTrackIndex.bind(this);
     this._assignRoot = this._assignRoot.bind(this);
     this._onError = this._onError.bind(this);
     this._onProgress = this._onProgress.bind(this);
@@ -53,6 +54,10 @@ export default class VLCPlayer extends Component {
 
   changeVideoAspectRatio(ratio) {
     this.setNativeProps({ videoAspectRatio: ratio });
+  }
+
+  currentAudioTrackIndex(index) {
+    this.setNativeProps({currentAudioTrackIndex: index})
   }
 
   _assignRoot(component) {
@@ -115,9 +120,7 @@ export default class VLCPlayer extends Component {
   }
 
   _onAudioTracks(event) {
-    console.log("event", event)
     if (this.props.onAudioTracks) {
-      console.log("event.nativeEvent", event.nativeEvent)
       this.props.onAudioTracks(event.nativeEvent);
     }
   }
@@ -197,6 +200,7 @@ VLCPlayer.propTypes = {
   poster: PropTypes.string,
   repeat: PropTypes.bool,
   muted: PropTypes.bool,
+  currentAudioTrackIndex: PropTypes.number,
 
   onVideoLoadStart: PropTypes.func,
   onVideoError: PropTypes.func,
