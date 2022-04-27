@@ -26,7 +26,8 @@ export default class VLCPlayer extends Component {
     this._onOpen = this._onOpen.bind(this);
     this._onLoadStart = this._onLoadStart.bind(this);
     this.changeVideoAspectRatio = this.changeVideoAspectRatio.bind(this);
-    this._onAudioTracks = this._onAudioTracks.bind(this)
+    this._onAudioTracks = this._onAudioTracks.bind(this);
+    this._onVideoSubtitles = this._onVideoSubtitles.bind(this);
 ;  }
   static defaultProps = {
     autoplay: true,
@@ -57,7 +58,11 @@ export default class VLCPlayer extends Component {
   }
 
   currentAudioTrackIndex(index) {
-    this.setNativeProps({currentAudioTrackIndex: index})
+    this.setNativeProps({currentAudioTrackIndex: index});
+  }
+
+  currentVideoSubTitleIndex(index) {
+    this.setNativeProps({currentVideoSubTitleIndex: index});
   }
 
   _assignRoot(component) {
@@ -124,6 +129,12 @@ export default class VLCPlayer extends Component {
       this.props.onAudioTracks(event.nativeEvent);
     }
   }
+  
+  _onVideoSubtitles(event) {
+    if (this.props.onAudioTracks) {
+      this.props.onSubtitles(event.nativeEvent);
+    }
+  }
 
   render() {
     /* const {
@@ -174,6 +185,7 @@ export default class VLCPlayer extends Component {
       onVideoStopped: this._onStopped,
       onVideoBuffering: this._onBuffering,
       onVideoAudioTracks: this._onAudioTracks,
+      onVideoSubtitles: this._onVideoSubtitles,
       progressUpdateInterval: 250,
     });
 
@@ -201,6 +213,7 @@ VLCPlayer.propTypes = {
   repeat: PropTypes.bool,
   muted: PropTypes.bool,
   currentAudioTrackIndex: PropTypes.number,
+  currentVideoSubTitleIndex: PropTypes.number,
 
   onVideoLoadStart: PropTypes.func,
   onVideoError: PropTypes.func,
@@ -212,6 +225,7 @@ VLCPlayer.propTypes = {
   onVideoBuffering: PropTypes.func,
   onVideoOpen: PropTypes.func,
   onVideoAudioTracks: PropTypes.func,
+  onVideoSubtitles: PropTypes.func,
   
   /* Wrapper component */
   source: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
@@ -223,6 +237,7 @@ VLCPlayer.propTypes = {
   onPlaying: PropTypes.func,
   onPaused: PropTypes.func,
   onAudioTracks: PropTypes.func,
+  onSubtitles: PropTypes.func,
 
   /* Required by react-native */
   scaleX: PropTypes.number,

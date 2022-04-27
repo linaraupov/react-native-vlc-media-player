@@ -14,6 +14,7 @@
 @property (nonatomic, copy) RCTDirectEventBlock onVideoOpen;
 @property (nonatomic, copy) RCTDirectEventBlock onVideoLoadStart;
 @property (nonatomic, copy) RCTDirectEventBlock onVideoAudioTracks;
+@property (nonatomic, copy) RCTDirectEventBlock onVideoSubtitles;
 
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher NS_DESIGNATED_INITIALIZER;
