@@ -5,16 +5,19 @@ import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
 import android.net.Uri;
+
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
 
@@ -24,9 +27,7 @@ import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
 
 import java.util.ArrayList;
-
-
-
+import java.util.Arrays;
 
 
 @SuppressLint("ViewConstructor")
@@ -223,6 +224,8 @@ class ReactVlcPlayerView extends TextureView implements
                 case MediaPlayer.Event.Playing:
                     map.putString("type", "Playing");
                     eventEmitter.sendEvent(map, VideoEventEmitter.EVENT_ON_IS_PLAYING);
+                    onVideoAudioTracks();
+                    onVideoSubtitles();
                     break;
                 case MediaPlayer.Event.Opening:
                     map.putString("type", "Opening");
@@ -623,6 +626,62 @@ class ReactVlcPlayerView extends TextureView implements
             }
         }
     };
+    
+    public void onVideoAudioTracks() {
+        if(mMediaPlayer != null) {
+            WritableMap map = Arguments.createMap();
+            WritableArray trackIndexes = Arguments.createArray();
+            MediaPlayer.TrackDescription[] tracks =  mMediaPlayer.getAudioTracks();
+            WritableArray trackNames = Arguments.createArray();
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                Arrays.stream(tracks).forEach(t -> {
+                    trackIndexes.pushInt(t.id);
+                    trackNames.pushString(t.name);
+                });
+            }
+            map.putArray("trackIndexes", trackIndexes);
+            map.putArray("trackNames", trackNames);
+            int currentAudioTrackIndex = mMediaPlayer.getAudioTrack();
+            map.putInt("currentTrackIndex",currentAudioTrackIndex);
+
+            eventEmitter.sendEvent(map,VideoEventEmitter.EVENT_ON_AUDIO_TRACKS);
+        }
+    }
+
+    public void onVideoSubtitles() {
+        if(mMediaPlayer != null) {
+            WritableMap map = Arguments.createMap();
+            WritableArray subtitleIndexes = Arguments.createArray();
+            MediaPlayer.TrackDescription[] subtitles =  mMediaPlayer.getSpuTracks();
+            WritableArray subtitleNames = Arguments.createArray();
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                Arrays.stream(subtitles).forEach(t -> {
+                    subtitleIndexes.pushInt(t.id);
+                    subtitleNames.pushString(t.name);
+                });
+            }
+            map.putArray("subtitleIndexes", subtitleIndexes);
+            map.putArray("subtitleNames", subtitleNames);
+            int currentVideoSubTitleIndex = mMediaPlayer.getSpuTrack();
+            map.putInt("currentVideoSubTitleIndex",currentVideoSubTitleIndex);
+
+            eventEmitter.sendEvent(map,VideoEventEmitter.EVENT_ON_VIDEO_SUBTITLES);
+        }
+    }
+
+
+    public void setVideoTrackIndex(int index) {
+        if(mMediaPlayer != null) {
+            mMediaPlayer.setAudioTrack(index);
+        }
+    }
+
+    public void setVideoSubtitleIndex(int index) {
+        if(mMediaPlayer != null) {
+            mMediaPlayer.setSpuTrack(index);
+        }
+    }
+
 
     /*private void changeSurfaceSize(boolean message) {
 

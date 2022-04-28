@@ -36,6 +36,9 @@ class VideoEventEmitter {
     public static final String EVENT_ON_ERROR = "onVideoError";
     public static final String EVENT_ON_VIDEO_BUFFERING = "onVideoBuffering";
     public static final String EVENT_ON_PAUSED = "onVideoPaused";
+    public static final String EVENT_ON_AUDIO_TRACKS = "onVideoAudioTracks";
+    public static final String EVENT_ON_VIDEO_SUBTITLES = "onVideoSubtitles";
+
 
     static final String[] Events = {
             EVENT_LOAD_START,
@@ -49,7 +52,9 @@ class VideoEventEmitter {
             EVENT_ON_PAUSED,
             EVENT_ON_VIDEO_BUFFERING,
             EVENT_ON_ERROR,
-            EVENT_ON_VIDEO_STOPPED
+            EVENT_ON_VIDEO_STOPPED,
+            EVENT_ON_AUDIO_TRACKS,
+            EVENT_ON_VIDEO_SUBTITLES
     };
 
     @Retention(RetentionPolicy.SOURCE)
@@ -65,7 +70,9 @@ class VideoEventEmitter {
             EVENT_ON_PAUSED,
             EVENT_ON_VIDEO_BUFFERING,
             EVENT_ON_ERROR,
-            EVENT_ON_VIDEO_STOPPED
+            EVENT_ON_VIDEO_STOPPED,
+            EVENT_ON_AUDIO_TRACKS,
+            EVENT_ON_VIDEO_SUBTITLES
     })
 
     @interface VideoEvents {

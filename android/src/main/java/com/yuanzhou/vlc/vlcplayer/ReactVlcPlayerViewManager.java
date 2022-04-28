@@ -22,9 +22,9 @@ public class ReactVlcPlayerViewManager extends SimpleViewManager<ReactVlcPlayerV
     private static final String PROP_SRC_TYPE = "type";
     private static final String PROP_REPEAT = "repeat";
     private static final String PROP_PAUSED = "paused";
-    private static final String PROP_MUTED = "muted";
     private static final String PROP_VOLUME = "volume";
     private static final String PROP_SEEK = "seek";
+    private static final String PROP_MUTED = "muted";
     private static final String PROP_RESUME = "resume";
     private static final String PROP_RATE = "rate";
     private static final String PROP_POSITION = "position";
@@ -34,6 +34,8 @@ public class ReactVlcPlayerViewManager extends SimpleViewManager<ReactVlcPlayerV
     private static final String PROP_AUTO_ASPECT_RATIO = "autoAspectRatio";
     private static final String PROP_CLEAR = "clear";
     private static final String PROP_PROGRESS_UPDATE_INTERVAL = "progressUpdateInterval";
+    private static final String PROP_CURRENT_AUDIO_TRACK_INDEX = "currentAudioTrackIndex";
+    private static final String PROP_CURRENT_VIDEO_SUB_TITLE_INDEX = "currentVideoSubTitleIndex";
 
 
     @Override
@@ -144,6 +146,15 @@ public class ReactVlcPlayerViewManager extends SimpleViewManager<ReactVlcPlayerV
     @ReactProp(name = PROP_SNAPSHOT_PATH)
     public void setSnapshotPath(final ReactVlcPlayerView videoView, final String snapshotPath) {
         videoView.doSnapshot(snapshotPath);
+    }
+
+    @ReactProp(name = PROP_CURRENT_AUDIO_TRACK_INDEX)
+    public void setVideoTrackIndex(final ReactVlcPlayerView videoView, final int currentAudioTrackIndex) {
+        videoView.setVideoTrackIndex(currentAudioTrackIndex);
+    }
+    @ReactProp(name = PROP_CURRENT_VIDEO_SUB_TITLE_INDEX)
+    public void setVideoSubtitleIndex(final ReactVlcPlayerView videoView, final int currentVideoSubTitleIndex) {
+        videoView.setVideoTrackIndex(currentVideoSubTitleIndex);
     }
 
 
