@@ -111,8 +111,7 @@ public class ReactVlcPlayerViewManager extends SimpleViewManager<ReactVlcPlayerV
 
     @ReactProp(name = PROP_SEEK)
     public void setSeek(final ReactVlcPlayerView videoView, final float seek) {
-        videoView.seekTo(Math.round(seek * 1000f));
-        //videoView.seekTo(seek);
+        videoView.setPosition(seek);
     }
 
     @ReactProp(name = PROP_AUTO_ASPECT_RATIO, defaultBoolean = false)
@@ -136,8 +135,6 @@ public class ReactVlcPlayerViewManager extends SimpleViewManager<ReactVlcPlayerV
         videoView.setPosition(potision);
     }
 
-
-
     @ReactProp(name = PROP_VIDEO_ASPECT_RATIO)
     public void setVideoAspectRatio(final ReactVlcPlayerView videoView, final String aspectRatio) {
         videoView.setAspectRatio(aspectRatio);
@@ -152,9 +149,10 @@ public class ReactVlcPlayerViewManager extends SimpleViewManager<ReactVlcPlayerV
     public void setVideoTrackIndex(final ReactVlcPlayerView videoView, final int currentAudioTrackIndex) {
         videoView.setVideoTrackIndex(currentAudioTrackIndex);
     }
+
     @ReactProp(name = PROP_CURRENT_VIDEO_SUB_TITLE_INDEX)
     public void setVideoSubtitleIndex(final ReactVlcPlayerView videoView, final int currentVideoSubTitleIndex) {
-        videoView.setVideoTrackIndex(currentVideoSubTitleIndex);
+        videoView.setVideoSubtitleIndex(currentVideoSubTitleIndex);
     }
 
 
