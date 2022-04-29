@@ -631,9 +631,12 @@ class ReactVlcPlayerView extends TextureView implements
         if(mMediaPlayer != null) {
             WritableMap map = Arguments.createMap();
             WritableArray trackIndexes = Arguments.createArray();
-            MediaPlayer.TrackDescription[] tracks =  mMediaPlayer.getAudioTracks();
             WritableArray trackNames = Arguments.createArray();
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+
+            MediaPlayer.TrackDescription[] tracks =  mMediaPlayer.getAudioTracks();
+            int currentAudioTrackIndex = mMediaPlayer.getAudioTrack();
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N && tracks != null) {
                 Arrays.stream(tracks).forEach(t -> {
                     trackIndexes.pushInt(t.id);
                     trackNames.pushString(t.name);
@@ -641,7 +644,6 @@ class ReactVlcPlayerView extends TextureView implements
             }
             map.putArray("trackIndexes", trackIndexes);
             map.putArray("trackNames", trackNames);
-            int currentAudioTrackIndex = mMediaPlayer.getAudioTrack();
             map.putInt("currentTrackIndex",currentAudioTrackIndex);
 
             eventEmitter.sendEvent(map,VideoEventEmitter.EVENT_ON_AUDIO_TRACKS);
@@ -652,9 +654,13 @@ class ReactVlcPlayerView extends TextureView implements
         if(mMediaPlayer != null) {
             WritableMap map = Arguments.createMap();
             WritableArray subtitleIndexes = Arguments.createArray();
-            MediaPlayer.TrackDescription[] subtitles =  mMediaPlayer.getSpuTracks();
             WritableArray subtitleNames = Arguments.createArray();
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+
+            MediaPlayer.TrackDescription[] subtitles =  mMediaPlayer.getSpuTracks();
+            int currentVideoSubTitleIndex = mMediaPlayer.getSpuTrack();
+
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N && subtitles != null) {
                 Arrays.stream(subtitles).forEach(t -> {
                     subtitleIndexes.pushInt(t.id);
                     subtitleNames.pushString(t.name);
@@ -662,13 +668,11 @@ class ReactVlcPlayerView extends TextureView implements
             }
             map.putArray("subtitleIndexes", subtitleIndexes);
             map.putArray("subtitleNames", subtitleNames);
-            int currentVideoSubTitleIndex = mMediaPlayer.getSpuTrack();
             map.putInt("currentVideoSubTitleIndex",currentVideoSubTitleIndex);
 
             eventEmitter.sendEvent(map,VideoEventEmitter.EVENT_ON_VIDEO_SUBTITLES);
         }
     }
-
 
     public void setVideoTrackIndex(int index) {
         if(mMediaPlayer != null) {
