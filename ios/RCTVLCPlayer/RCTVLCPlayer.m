@@ -238,56 +238,50 @@ static NSString *const playbackRate = @"rate";
 - (void)mediaPlayerStateChanged:(NSNotification *)aNotification
 {
 
-     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-     NSLog(@"userInfo %@",[aNotification userInfo]);
-     NSLog(@"standardUserDefaults %@",defaults);
     if(_player){
+        BOOL isPlaying = _player.isPlaying;
+
         VLCMediaPlayerState state = _player.state;
         switch (state) {
             case VLCMediaPlayerStateOpening:
-                 NSLog(@"VLCMediaPlayerStateOpening %i",1111);
                 self.onVideoOpen(@{
                                      @"target": self.reactTag
                                      });
                 break;
             case VLCMediaPlayerStatePaused:
                 _paused = YES;
-                NSLog(@"VLCMediaPlayerStatePaused %i",2);
                 self.onVideoPaused(@{
                                      @"target": self.reactTag
                                      });
                 break;
             case VLCMediaPlayerStateStopped:
-                NSLog(@"VLCMediaPlayerStateStopped %i",1);
+
                 self.onVideoStopped(@{
                                       @"target": self.reactTag
                                       });
                 break;
             case VLCMediaPlayerStateBuffering:
-                NSLog(@"VLCMediaPlayerStateBuffering %i",1);
                 self.onVideoBuffering(@{
-                                        @"target": self.reactTag
+                                        @"target": self.reactTag,
+                                        @"isPlaying": [NSNumber numberWithBool: isPlaying]
                                         });
+                [self onVideoTracks];
+                [self onSubtitles];
                 break;
             case VLCMediaPlayerStatePlaying:
                 _paused = NO;
-                NSLog(@"VLCMediaPlayerStatePlaying %i",1);
                 self.onVideoPlaying(@{
                                       @"target": self.reactTag,
                                       @"seekable": [NSNumber numberWithBool:[_player isSeekable]],
                                       @"duration":[NSNumber numberWithInt:[_player.media.length intValue]]
                                       });
-                [self onVideoTracks];
-                [self onSubtitles];
                 break;
             case VLCMediaPlayerStateEnded:
-                NSLog(@"VLCMediaPlayerStateEnded %i",1);
                 self.onVideoEnded(@{
                                     @"target": self.reactTag,
                                     });
                 break;
             case VLCMediaPlayerStateError:
-                NSLog(@"VLCMediaPlayerStateError %i",1);
                 self.onVideoError(@{
                                     @"target": self.reactTag
                                     });
@@ -390,7 +384,6 @@ static NSString *const playbackRate = @"rate";
 #pragma mark - Lifecycle
 - (void)removeFromSuperview
 {
-    NSLog(@"removeFromSuperview");
     [self _release];
     [super removeFromSuperview];
 }
